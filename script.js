@@ -21,7 +21,17 @@ async function getWeather(city) {
 document.getElementById("searchBtn").addEventListener("click", function () {
   let city = document.getElementById("cityInput").value;
   if (city) {
+    localStorage.setItem("lastCity", city);
     getWeather(city);
+  }
+});
+
+//Pobieranie zapisanego miasta przy starcie strony
+
+document.addEventListener("DOMContentLoaded", () => {
+  let lastCity = localStorage.getItem("lastCity");
+  if (lastCity) {
+    getWeather(lastCity);
   }
 });
 
