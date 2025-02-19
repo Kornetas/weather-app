@@ -52,6 +52,57 @@ function displayForecast(data) {
   document.getElementById("forecastResult").innerHTML = forecastHTML;
 }
 
+// funkcja do pobierania lokalizacji użytkownika
+
+function getLocation() {
+  if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(
+      async function (position) {
+        let lat = position.coords.latitude;
+        let lon = position.coords.longitude;
+        getWeatherByCoords(lat, lon);
+      },
+      function (error) {
+        console.error("Błąd w geolokalizacji", error);
+        document.getElementById(
+          "weatherResult"
+        ).innerHTML = `<p style ="color: red;">Nie można pobrać lokalizacji</p>`;
+      }
+    );
+  } else {
+    console.error("Geolokalizacja nie jest wspierana przez tę przeglądarkę.");
+  }
+}
+
+// Pobieranie pogody na podstawie współrzędnych
+async function getWeatherByCoords(lat, lon) {
+  const apiKey = "457ecd51db60a77bdcab547d055c4a89"; // Moj klucz api
+  const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=pl`;
+  const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=pl`;
+
+  try {
+    let weatherResponse = await fetch(currentWeatherUrl);
+    let forecastResponse = await fetch(forecastUrl);
+
+    if (!weatherResponse.ok || !forecastResponse.ok) {
+      throw new Error(
+        `Błąd: ${weatherResponse.status} | ${forecastResponse.status}`
+      );
+    }
+
+    let weatherData = await weatherResponse.json();
+    let forecastData = await forecastResponse.json();
+
+    displayWeather(weatherData);
+    displayForecast(forecastData);
+  } catch (error) {
+    console.error(error);
+    document.getElementById(
+      "weatherResult"
+    ).innerHTML = `<p style="color:red;">Błąd podczas pobierania pogody</p>`;
+  }
+}
+
 // Obsługa przycisku
 document.getElementById("searchBtn").addEventListener("click", function () {
   let city = document.getElementById("cityInput").value;
@@ -61,12 +112,18 @@ document.getElementById("searchBtn").addEventListener("click", function () {
   }
 });
 
+// Obsługa przycisku 2
+
+document.getElementById("geoBtn").addEventListener("click", getLocation);
+
 //Pobieranie zapisanego miasta przy starcie strony
 
 document.addEventListener("DOMContentLoaded", () => {
   let lastCity = localStorage.getItem("lastCity");
   if (lastCity) {
     getWeather(lastCity);
+  } else {
+    getLocation();
   }
 });
 
