@@ -37,11 +37,14 @@ function displayForecast(data) {
     let day = date.toLocaleDateString("pl-PL", { weekday: "long" });
 
     if (!days[day]) {
+      // Pobieramy tylko pierwszą prognozę na dany dzień
       days[day] = `
                 <div class="forecast-card">
                     <p><strong>${day}</strong></p>
-                    <img src="https://openweathermap.org/img/wn/${entry.weather[0].icon}.png" alt="Ikona">
-                    <p>${entry.main.temp}°C</p>
+                    <img src="https://openweathermap.org/img/wn/${
+                      entry.weather[0].icon
+                    }@4x.png" alt="Ikona">
+                    <p>${entry.main.temp.toFixed(1)}°C</p>
                     <p>${entry.weather[0].description}</p>
                 </div>
             `;
@@ -51,7 +54,6 @@ function displayForecast(data) {
   forecastHTML += Object.values(days).join("") + "</div>";
   document.getElementById("forecastResult").innerHTML = forecastHTML;
 }
-
 // funkcja do pobierania lokalizacji użytkownika
 
 function getLocation() {
@@ -63,10 +65,10 @@ function getLocation() {
         getWeatherByCoords(lat, lon);
       },
       function (error) {
-        console.error("Błąd w geolokalizacji", error);
+        console.error("Błąd geolokalizacji:", error);
         document.getElementById(
           "weatherResult"
-        ).innerHTML = `<p style ="color: red;">Nie można pobrać lokalizacji</p>`;
+        ).innerHTML = `<p style="color:red;">Nie można pobrać lokalizacji</p>`;
       }
     );
   } else {
@@ -116,14 +118,14 @@ document.getElementById("searchBtn").addEventListener("click", function () {
 
 document.getElementById("geoBtn").addEventListener("click", getLocation);
 
-//Pobieranie zapisanego miasta przy starcie strony
+// Pobieranie zapisanego miasta przy starcie strony
 
 document.addEventListener("DOMContentLoaded", () => {
   let lastCity = localStorage.getItem("lastCity");
   if (lastCity) {
     getWeather(lastCity);
   } else {
-    getLocation();
+    getLocation(); // Wywołujemy pobranie lokalizacji przy starcie strony
   }
 });
 
@@ -135,6 +137,32 @@ function displayWeather(data) {
         <p>Temperatura: ${data.main.temp}°C</p>
         <p>Wilgotność: ${data.main.humidity}%</p>
         <p>Wiatr: ${data.wind.speed} m/s</p>
-        <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}.png" alt="Ikona pogody">
+        <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png" alt="Ikona pogody">
     `;
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Sprawdź, czy tryb ciemny był włączony wcześniej
+  if (localStorage.getItem("darkMode") === "enabled") {
+    document.body.classList.add("dark-mode");
+  }
+
+  let lastCity = localStorage.getItem("lastCity");
+  if (lastCity) {
+    getWeather(lastCity);
+  }
+});
+
+// Obsługa przycisku trybu ciemnego
+document
+  .getElementById("darkModeToggle")
+  .addEventListener("click", function () {
+    document.body.classList.toggle("dark-mode");
+
+    // Sprawdź aktualny stan i zapisz w localStorage
+    if (document.body.classList.contains("dark-mode")) {
+      localStorage.setItem("darkMode", "enabled");
+    } else {
+      localStorage.setItem("darkMode", "disabled");
+    }
+  });
