@@ -42,7 +42,7 @@ function displayForecast(data) {
               <div class="forecast-card">
                   <p><strong>${day}</strong></p>
                   <img src="${getIconUrl(entry.weather[0].icon)}" alt="Ikona">
-                  <p>${entry.main.temp.toFixed(1)}°C</p>
+                  <p>${Math.round(entry.main.temp)}°C</p>
                   <p>${entry.weather[0].description}</p>
               </div>
           `;
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function displayWeather(data) {
   document.getElementById("weatherResult").innerHTML = `
       <h2>${data.name}, ${data.sys.country}</h2>
-      <p>Temperatura: ${data.main.temp}°C</p>
+      <p>Temperatura: ${Math.round(data.main.temp)}°C</p>
       <p>Wilgotność: ${data.main.humidity}%</p>
       <p>Wiatr: ${data.wind.speed} m/s</p>
       <img src="${getIconUrl(data.weather[0].icon)}" alt="Ikona pogody">
