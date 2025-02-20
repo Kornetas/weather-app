@@ -39,21 +39,20 @@ function displayForecast(data) {
     if (!days[day]) {
       // Pobieramy tylko pierwszą prognozę na dany dzień
       days[day] = `
-                <div class="forecast-card">
-                    <p><strong>${day}</strong></p>
-                    <img src="https://openweathermap.org/img/wn/${
-                      entry.weather[0].icon
-                    }@4x.png" alt="Ikona">
-                    <p>${entry.main.temp.toFixed(1)}°C</p>
-                    <p>${entry.weather[0].description}</p>
-                </div>
-            `;
+              <div class="forecast-card">
+                  <p><strong>${day}</strong></p>
+                  <img src="${getIconUrl(entry.weather[0].icon)}" alt="Ikona">
+                  <p>${entry.main.temp.toFixed(1)}°C</p>
+                  <p>${entry.weather[0].description}</p>
+              </div>
+          `;
     }
   });
 
   forecastHTML += Object.values(days).join("") + "</div>";
   document.getElementById("forecastResult").innerHTML = forecastHTML;
 }
+
 // funkcja do pobierania lokalizacji użytkownika
 
 function getLocation() {
@@ -133,12 +132,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function displayWeather(data) {
   document.getElementById("weatherResult").innerHTML = `
-        <h2>${data.name}, ${data.sys.country}</h2>
-        <p>Temperatura: ${data.main.temp}°C</p>
-        <p>Wilgotność: ${data.main.humidity}%</p>
-        <p>Wiatr: ${data.wind.speed} m/s</p>
-        <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png" alt="Ikona pogody">
-    `;
+      <h2>${data.name}, ${data.sys.country}</h2>
+      <p>Temperatura: ${data.main.temp}°C</p>
+      <p>Wilgotność: ${data.main.humidity}%</p>
+      <p>Wiatr: ${data.wind.speed} m/s</p>
+      <img src="${getIconUrl(data.weather[0].icon)}" alt="Ikona pogody">
+  `;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -166,3 +165,32 @@ document
       localStorage.setItem("darkMode", "disabled");
     }
   });
+
+// Mapa kodów OpenWeatherMap do ikon kolorowych
+const iconMap = {
+  "01d": "https://img.icons8.com/color/96/sun.png",
+  "01n": "https://img.icons8.com/color/96/full-moon.png",
+  "02d": "https://img.icons8.com/color/96/partly-cloudy-day.png",
+  "02n": "https://img.icons8.com/color/96/partly-cloudy-night.png",
+  "03d": "https://img.icons8.com/color/96/cloud.png",
+  "03n": "https://img.icons8.com/color/96/cloud.png",
+  "04d": "https://img.icons8.com/color/96/clouds.png",
+  "04n": "https://img.icons8.com/color/96/clouds.png",
+  "09d": "https://img.icons8.com/color/96/rain.png",
+  "09n": "https://img.icons8.com/color/96/rain.png",
+  "10d": "https://img.icons8.com/color/96/light-rain.png",
+  "10n": "https://img.icons8.com/color/96/light-rain.png",
+  "11d": "https://img.icons8.com/color/96/storm.png",
+  "11n": "https://img.icons8.com/color/96/storm.png",
+  "13d": "https://img.icons8.com/color/96/snow.png",
+  "13n": "https://img.icons8.com/color/96/snow.png",
+  "50d": "https://img.icons8.com/color/96/fog-day.png",
+  "50n": "https://img.icons8.com/color/96/fog-night.png",
+};
+
+// Funkcja zwracająca URL do kolorowej ikony
+function getIconUrl(iconCode) {
+  return (
+    iconMap[iconCode] || `https://openweathermap.org/img/wn/${iconCode}@4x.png`
+  ); // Domyślnie OpenWeatherMap
+}
