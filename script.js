@@ -131,6 +131,9 @@ document.addEventListener("DOMContentLoaded", () => {
 //Funkcja do wyswietlenia danych
 
 function displayWeather(data) {
+  let weatherDescription = data.weather[0].description; // Pobieramy opis pogody
+  changeBackground(weatherDescription); // Zmieniamy kolor tła
+
   document.getElementById("weatherResult").innerHTML = `
       <h2>${data.name}, ${data.sys.country}</h2>
       <p>Temperatura: ${Math.round(data.main.temp)}°C</p>
@@ -193,4 +196,59 @@ function getIconUrl(iconCode) {
   return (
     iconMap[iconCode] || `https://openweathermap.org/img/wn/${iconCode}@4x.png`
   ); // Domyślnie OpenWeatherMap
+}
+
+// Mapa kolorów dla różnych warunków pogodowych
+
+const weatherBackgrounds = new Map([
+  ["clear sky", "linear-gradient(to bottom, #87CEEB, #FFD700)"],
+  ["bezchmurnie", "linear-gradient(to bottom, #A0E1FF, #FFA500)"],
+  ["słonecznie", "linear-gradient(to bottom, #FFD700, #FFA500)"],
+
+  ["pochmurno", "linear-gradient(to bottom, #A9A9A9, #707070)"],
+  ["pochmurnie", "linear-gradient(to bottom, #B0B0B0, #808080)"],
+  ["zachmurzenie małe", "linear-gradient(to bottom, #C0D8E0, #B0C4DE)"],
+  ["lekkie zachmurzenie", "linear-gradient(to bottom, #B0C4DE, #A0C4FF)"],
+  ["zachmurzenie duże", "linear-gradient(to bottom, #606060, #505050)"],
+
+  ["rain", "linear-gradient(to bottom, #5A86C5, #2D4A74)"],
+  ["lekki deszcz", "linear-gradient(to bottom, #A0BCE1, #5075A3)"],
+  ["mżawka", "linear-gradient(to bottom, #A0BCE1, #5F9EA0)"],
+  ["opady deszczu", "linear-gradient(to bottom, #5F9EA0, #4169E1)"],
+  ["burza", "linear-gradient(to bottom, #2F2F2F, #1E1E1E)"],
+
+  ["śnieg", "linear-gradient(to bottom, #E0E6FF, #B0C4DE)"],
+  ["opady śniegu", "linear-gradient(to bottom, #DDEFFF, #FFFFFF)"],
+  ["śnieżyca", "linear-gradient(to bottom, #D0E0FF, #C0C0C0)"],
+
+  ["mgła", "linear-gradient(to bottom, #A9A9A9, #808080)"],
+  ["gęsta mgła", "linear-gradient(to bottom, #808080, #606060)"],
+  ["zamglenie", "linear-gradient(to bottom, #B0B0B0, #969696)"],
+
+  ["zachód słońca", "linear-gradient(to bottom, #FF8C00, #FF4500)"],
+  ["wschód słońca", "linear-gradient(to bottom, #FFB347, #FFD700)"],
+]);
+
+// Funkcja do zmiany koloru tła
+function changeBackground(description) {
+  let normalizedDescription = description
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-ząćęłńóśźż\s]/g, ""); // Usuwamy znaki specjalne
+
+  let bgGradient =
+    weatherBackgrounds.get(normalizedDescription) ||
+    "linear-gradient(to bottom, #f4f4f4, #d3d3d3)";
+
+  if (!weatherBackgrounds.has(normalizedDescription)) {
+    for (let key of weatherBackgrounds.keys()) {
+      if (normalizedDescription.includes(key)) {
+        bgGradient = weatherBackgrounds.get(key);
+        break;
+      }
+    }
+  }
+
+  document.body.style.transition = "background 1.5s ease-in-out";
+  document.body.style.background = bgGradient;
 }

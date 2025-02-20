@@ -2,7 +2,7 @@ body {
   font-family: Arial, sans-serif;
   text-align: center;
   background-color: #f4f4f4;
-  transition: background 0.3s, color 0.3s;
+  transition: background 1s ease-in-out;
 }
 
 /* Tryb ciemny */
