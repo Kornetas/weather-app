@@ -1,114 +1,182 @@
+/*  Globalne ustawienia */
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Poppins", sans-serif;
   text-align: center;
   background-color: #f4f4f4;
-  transition: background 1s ease-in-out;
+  transition: background 1s ease-in-out, color 0.3s;
+  padding: 20px;
 }
 
 /* Tryb ciemny */
 body.dark-mode {
-  background-color: #121212;
+  background-color: #1a1a1a;
   color: white;
 }
 
-/* Kontener */
+/* Kontener główny */
 .container {
-  width: 300px;
-  margin: 100px auto;
+  width: 90%;
+  max-width: 400px;
+  margin: auto;
   background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
   transition: background 0.3s, box-shadow 0.3s;
 }
 
 /* Tryb ciemny - kontener */
 .dark-mode .container {
-  background-color: #1e1e1e;
-  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+  background-color: #242424;
+  box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.1);
 }
 
-/* Pola tekstowe i przyciski */
-input,
+/* Pole wyszukiwania */
+input[type="text"] {
+  padding: 14px;
+  margin: 10px 0;
+  width: 100%;
+  max-width: 350px;
+  font-size: 16px;
+  font-weight: 500;
+  border: 3px solid #007bff;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s, font-weight 0.2s;
+  background-color: white;
+  color: #333;
+}
+
+/* Placeholder (tekst w polu) */
+input[type="text"]::placeholder {
+  color: #444;
+  font-weight: bold;
+  transition: color 0.3s, font-weight 0.3s;
+}
+
+/* Efekt podświetlenia pola wyszukiwania */
+input[type="text"]:focus {
+  border-color: #0056b3;
+  box-shadow: 0px 0px 10px rgba(0, 86, 179, 0.5);
+  font-weight: bold;
+}
+
+/* Tryb ciemny - pole wyszukiwania */
+.dark-mode input[type="text"] {
+  background-color: #333;
+  color: white;
+  border: 3px solid #00a2ff;
+}
+
+/* Tryb ciemny - placeholder */
+.dark-mode input[type="text"]::placeholder {
+  color: #ccc;
+  font-weight: bold;
+}
+
+/* Przycisk */
 button {
-  padding: 10px;
-  margin: 5px;
-  width: 80%;
+  padding: 12px;
+  margin: 7px;
+  width: 100%;
+  max-width: 350px;
   border: none;
-  border-radius: 5px;
-  transition: background 0.3s, color 0.3s;
-}
-
-/* Przycisk - tryb jasny */
-button {
-  background-color: dodgerblue;
-  color: white;
+  border-radius: 8px;
+  font-weight: bold;
   cursor: pointer;
-}
-
-/* Przycisk - tryb ciemny */
-.dark-mode button {
-  background-color: #444;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+  background: linear-gradient(135deg, #4a90e2, #007bff);
   color: white;
-  border: 1px solid white;
+  box-shadow: 0px 3px 8px rgba(0, 123, 255, 0.3);
 }
 
-.dark-mode button:hover {
-  background-color: #666;
+/* Efekt hover */
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 5px 12px rgba(0, 123, 255, 0.5);
+}
+
+/* Tryb ciemny - przyciski */
+.dark-mode button {
+  background: linear-gradient(135deg, #444, #666);
+  color: white;
+  box-shadow: 0px 3px 8px rgba(255, 255, 255, 0.1);
 }
 
 /* Wyniki pogody */
 #weatherResult,
 #forecastResult {
-  margin-top: 15px;
+  margin-top: 20px;
   transition: color 0.3s;
 }
 
-/* Tryb ciemny - wyniki */
+/*  Tryb ciemny - wyniki */
 .dark-mode #weatherResult,
 .dark-mode #forecastResult {
   color: white;
 }
 
-/* Prognoza pogody */
+/* Karty prognozy pogody */
 .forecast-container {
   display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
+  justify-content: center;
   flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
 }
 
-/* Karty prognozy */
+/*  Styl kart prognozy */
 .forecast-card {
   background: #ffffff;
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
-  width: 100px;
-  transition: background 0.3s, box-shadow 0.3s;
+  width: 110px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Efekt hover na kartach */
+.forecast-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Tryb ciemny - karty prognozy */
 .dark-mode .forecast-card {
-  background: #2b2b2b;
+  background: #333;
   color: white;
-  box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.1);
+  box-shadow: 0px 3px 8px rgba(255, 255, 255, 0.1);
 }
 
 /* Ikony pogodowe */
 .forecast-card img,
 #weatherResult img {
-  width: 50px;
-  height: 50px;
+  width: 55px;
+  height: 55px;
   background-color: transparent;
   border-radius: 10px;
   padding: 5px;
-  transition: filter 0.3s;
+  transition: transform 0.3s;
 }
 
-/* Tryb ciemny*/
+/* Efekt powiększenia ikony */
+.forecast-card img:hover {
+  transform: scale(1.1);
+}
+
+/* Tryb ciemny - ikony pogodowe */
 .dark-mode .forecast-card img,
 .dark-mode #weatherResult img {
   filter: brightness(1.2);
+}
+
+/* Responsywność */
+@media (max-width: 500px) {
+  .forecast-container {
+    justify-content: center;
+  }
+  .forecast-card {
+    width: 100px;
+  }
 }

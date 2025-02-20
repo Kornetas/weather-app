@@ -155,19 +155,37 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// Obsługa przycisku trybu ciemnego
-document
-  .getElementById("darkModeToggle")
-  .addEventListener("click", function () {
-    document.body.classList.toggle("dark-mode");
+// Pobranie referencji do przycisku trybu ciemnego
+const darkModeToggle = document.getElementById("darkModeToggle");
 
-    // Sprawdź aktualny stan i zapisz w localStorage
-    if (document.body.classList.contains("dark-mode")) {
-      localStorage.setItem("darkMode", "enabled");
-    } else {
-      localStorage.setItem("darkMode", "disabled");
-    }
-  });
+// Funkcja do przełączania trybu ciemnego
+function toggleDarkMode() {
+  document.body.classList.toggle("dark-mode");
+
+  // Sprawdzenie aktualnego trybu i zapisanie w localStorage
+  if (document.body.classList.contains("dark-mode")) {
+    localStorage.setItem("darkMode", "enabled");
+    darkModeToggle.innerHTML = "☀️ Tryb jasny"; 
+  } else {
+    localStorage.setItem("darkMode", "disabled");
+    darkModeToggle.innerHTML = "🌙 Tryb ciemny";
+  }
+}
+
+// Dodanie event listenera do przycisku
+darkModeToggle.addEventListener("click", toggleDarkMode);
+
+//  Sprawdzenie zapisanych ustawień po załadowaniu strony
+window.onload = function () {
+  const savedTheme = localStorage.getItem("darkMode");
+
+  if (savedTheme === "enabled") {
+    document.body.classList.add("dark-mode");
+    darkModeToggle.innerHTML = "☀️ Tryb jasny"; // Ustawienie poprawnego tekstu po załadowaniu
+  } else {
+    darkModeToggle.innerHTML = "🌙 Tryb ciemny"; // Domyślna wartość
+  }
+};
 
 // Mapa kodów OpenWeatherMap do ikon kolorowych
 const iconMap = {
